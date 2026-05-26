@@ -1,10 +1,10 @@
 CC := cc
 CFLAGS := -std=c17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -g
-CPPFLAGS := -I/opt/homebrew/Cellar/raylib/5.5/include -Isrc
-LDFLAGS := -L/opt/homebrew/Cellar/raylib/5.5/lib -lraylib
+CPPFLAGS := -Iexternal/raylib/src -Isrc
+LDFLAGS := -Lexternal/raylib/src -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-SRC := src/*.c
-OBJ := $(SRC:.c=.o)
+SRC := $(wildcard src/*.c)
+OBJ := $(patsubst %.c, %.o, $(SRC))
 
 app: $(OBJ)
 	$(CC) $(OBJ) $(LDFLAGS) -o $@
@@ -14,3 +14,5 @@ app: $(OBJ)
 
 clean:
 	rm -f $(OBJ) app
+
+.PHONY: clean

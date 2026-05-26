@@ -16,6 +16,8 @@ typedef struct Brick {
     Size size;
 } Brick;
 
+typedef Brick ShapeRectangle;
+
 typedef struct Velocity {
     float x;
     float y;

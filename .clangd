@@ -8,5 +8,5 @@ CompileFlags:
     - -Wconversion
     - -Wshadow
     - -g
-    - -Iinclude
-    - -I/opt/homebrew/Cellar/raylib/5.5/include
+    - -Isrc
+    - -Iexternal/raylib/src

@@ -1,4 +1,5 @@
 #include "storage.h"
+#include <stdlib.h>
 
 #define GENERATE_COMPONENT_STORAGE_API(base, target) \
     void target##_destroy(target *storage) { \

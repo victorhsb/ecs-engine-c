@@ -1,0 +1,6 @@
+# Build artifacts
+app
+*.o
+
+# Editor configs
+.zed/
