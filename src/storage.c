@@ -5,11 +5,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void PositionStorage_destroy(PositionStorage *storage) {
-    free(storage->dense_entities);
-    free(storage->sparse_entities);
-    free(storage->dense_data);
-}
+//
+// Position Storage serves as the reference point for all the other storage implementations
+// that may or may not be written using macros just for the sake of practicity.
+//
+// What are the functions i need to work on Positions?
+// create, fetch, check, delete
+// oh... it's a CRUD?
+//
 
 PositionStorage PositionStorage_init(void) {
     PositionStorage storage = {0};
@@ -19,6 +22,10 @@ PositionStorage PositionStorage_init(void) {
         storage.dense_entities[i] = (Entity) { 0 };
     }
     return storage;
+}
+
+void PositionStorage_destroy(PositionStorage *storage) {
+    (void)storage
 }
 
 bool has_position(PositionStorage *storage, Entity entity) {
@@ -76,10 +83,22 @@ void remove_position(PositionStorage *storage, Entity entity) {
     storage->dense_count--;
 }
 
+// checks if the entity exists (which already handles gen validation) and
+// then just returns the dense_data.
+Position *get_position_ptr(PositionStorage *storage, Entity entity) {
+    if (!has_position(storage, entity)) return NULL;
+
+    uint32_t dense_idx = storage->sparse_entities[get_entity_index(entity)];
+    return &storage->dense_data[dense_idx];
+}
+
+// -------------------------------------------------------------------------------------------------------
+// Other storages might not need that much of a deep implementation. Not like the singleton storages such 
+// as ball and paddle though.
+// -------------------------------------------------------------------------------------------------------
+
 void VelocityStorage_destroy(VelocityStorage *storage) {
-    free(storage->dense_entities);
-    free(storage->sparse_entities);
-    free(storage->dense_data);
+    (void)storage
 }
 
 VelocityStorage VelocityStorage_init(void) {
@@ -93,9 +112,7 @@ VelocityStorage VelocityStorage_init(void) {
 }
 
 void BrickStorage_destroy(BrickStorage *storage) {
-    free(storage->dense_entities);
-    free(storage->sparse_entities);
-    free(storage->dense_data);
+    (void)storage
 }
 
 BrickStorage BrickStorage_init(void) {

@@ -28,6 +28,7 @@ void PositionStorage_destroy(PositionStorage *storage);
 bool has_position(PositionStorage *storage, Entity entity);
 void upsert_position(PositionStorage *storage, Entity entity, Position position);
 void remove_position(PositionStorage *storage, Entity entity);
+Position *get_position(PositionStorage *storage, Entity entity);
 
 // C macro wizardry to dynamically generate structs
 #define GENERATE_COMPONENT_STORAGE(base, target) \
