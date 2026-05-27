@@ -8,7 +8,7 @@
     "reveal_target": "dock",
     "hide": "never",
     "shell": "system",
-    "save": "all",
+    "save": "all"
   },
   {
     "label": "Run Project",
@@ -19,7 +19,7 @@
     "reveal_target": "dock",
     "hide": "never",
     "shell": "system",
-    "save": "all",
+    "save": "all"
   },
   {
     "label": "Clean",
@@ -30,6 +30,17 @@
     "reveal_target": "dock",
     "hide": "never",
     "shell": "system",
-    "save": "none",
+    "save": "none"
   },
+  {
+    "label": "Test",
+    "command": "make cleantest && make test",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": true,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "shell": "system",
+    "save": "none"
+  }
 ]

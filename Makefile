@@ -14,11 +14,30 @@ endif
 SRC := $(wildcard src/*.c)
 OBJ := $(patsubst %.c, %.o, $(SRC))
 
+TEST_DEPS := src/entity.o src/storage.o
+TEST_RUNNER_SRC := $(wildcard test/*.c)
+TEST_RUNNER_OBJ := $(patsubst %.c, %.o, $(TEST_RUNNER_SRC))
+UNITY_OBJ := external/unity/unity.o
+
+TEST_CPPFLAGS := -Iexternal/unity -Isrc -Iexternal/raylib/src
+TEST_BIN := bin/test_runner
+
 app: $(OBJ)
 	$(CC) $(OBJ) $(LDFLAGS) -o $@
 
-%.o: %.c
+test: $(TEST_DEPS) $(UNITY_OBJ) $(TEST_RUNNER_OBJ)
+	@mkdir -p bin
+	$(CC) $(TEST_DEPS) $(UNITY_OBJ) $(TEST_RUNNER_OBJ) -lm -o $(TEST_BIN)
+	./$(TEST_BIN)
+
+src/%.o: src/%.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+external/unity/unity.o: external/unity/unity.c
+	$(CC) $(TEST_CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+test/%.o: test/%.c
+	$(CC) $(TEST_CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 raylib:
 	git submodule update --init --recursive
@@ -27,4 +46,7 @@ raylib:
 clean:
 	rm -f $(OBJ) app
 
-.PHONY: clean raylib
+cleantest:
+	rm -f $(TEST_DEPS) $(UNITY_OBJ) $(TEST_RUNNER_OBJ) $(TEST_BIN)
+
+.PHONY: clean cleantest raylib test

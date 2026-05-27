@@ -1,6 +1,7 @@
 # Build artifacts
 app
 *.o
+bin/
 
 # Editor configs
 .zed/
