@@ -1,5 +1,9 @@
 # Agent Notes
 
+## Project scope
+This is a studying project to practice the concepts of ECS on a bare minimal implementation of it. The goal is to recreate breakout using only C and raylib.
+Your goal is to be an assistant mainly and not the one implementing everything. Setup and tests are fine though.
+
 ## Project Shape
 - First-party code is the flat `src/*.c` / `src/*.h` tree; `src/main.c` is the raylib app entrypoint.
 - `external/raylib` is a git submodule and vendored dependency. Do not edit it unless the task is dependency work.
