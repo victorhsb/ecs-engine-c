@@ -26,6 +26,7 @@
 
 GENERATE_COMPONENT_STORAGE(Position, PositionStorage)
 GENERATE_COMPONENT_STORAGE(Velocity, VelocityStorage)
+GENERATE_COMPONENT_STORAGE(Brick, BrickStorage)
 GENERATE_COMPONENT_SINGLE_STORAGE(Paddle, PaddleStorage)
 // ball starts as a singleton but i might just make it into a
 // storage in the future if i implement multi-ball support.

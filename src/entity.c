@@ -12,6 +12,6 @@ int is_entity_valid(Entity entity) {
     return get_entity_generation(entity) != 0 && get_entity_index(entity) != 0;
 }
 
-Entity create_entity(uint32_t index, uint32_t generation) {
+Entity entity_init(uint32_t index, uint32_t generation) {
     return (Entity)((uint64_t)generation << 32 | index);
 }

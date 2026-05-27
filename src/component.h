@@ -14,9 +14,8 @@ typedef struct Size {
 typedef struct Brick {
     Color color;
     Size size;
+    uint8_t hp;
 } Brick;
-
-typedef Brick ShapeRectangle;
 
 typedef struct Velocity {
     float x;
@@ -31,4 +30,5 @@ typedef struct Paddle {
 typedef struct Ball {
     float radius;
     Color color;
+    uint8_t dmg;
 } Ball;
