@@ -99,52 +99,72 @@ Position *get_position(PositionStorage *storage, Entity const entity) {
 // as ball and paddle though.
 // -------------------------------------------------------------------------------------------------------
 
-void VelocityStorage_destroy(VelocityStorage *storage) {
-    (void)storage;
+#define GENERATE_STORAGE_INIT(tgt) \
+void tgt##_destroy(tgt *storage) { \
+    (void)storage; \
+} \
+tgt tgt##_init(void) { \
+    tgt storage = {0}; \
+    return storage; \
 }
 
-VelocityStorage VelocityStorage_init(void) {
-    VelocityStorage storage;
-    for (int i = 0; i < ENTITY_MAX_COUNT; i++) {
-        storage.sparse_entities[i] = 0;
-        storage.dense_data[i] = (Velocity) { 0 };
-        storage.dense_entities[i] = (Entity) { 0 };
-    }
-    return storage;
+#define GENERATE_STORAGE_CRUD(COMP, PREFIX) \
+bool has_##PREFIX(COMP##Storage *storage, Entity entity) { \
+    uint32_t idx = get_entity_index(entity); \
+    uint32_t gen = get_entity_generation(entity); \
+    uint32_t dense_index = storage->sparse_entities[idx]; \
+    uint32_t dense_gen = dense_index > 0 ? get_entity_generation(storage->dense_entities[dense_index]) : 0; \
+    return dense_index > 0 && dense_gen == gen; \
+} \
+\
+void upsert_##PREFIX(COMP##Storage *storage, Entity entity, COMP value) { \
+    uint32_t entity_idx = get_entity_index(entity); \
+    uint32_t dense_idx = storage->sparse_entities[entity_idx]; \
+    if (dense_idx > 0) { \
+        uint32_t stored_gen = get_entity_generation(storage->dense_entities[dense_idx]), \
+                 incoming_gen = get_entity_generation(entity); \
+        if (stored_gen == incoming_gen) { \
+            storage->dense_data[dense_idx] = value; \
+            return; \
+        } \
+        storage->dense_entities[dense_idx] = entity; \
+        storage->dense_data[dense_idx] = value; \
+        return; \
+    } \
+    assert(storage->dense_count < ENTITY_MAX_COUNT); \
+    uint32_t new_dense_index = ++storage->dense_count; \
+    storage->dense_entities[new_dense_index] = entity; \
+    storage->dense_data[new_dense_index] = value; \
+    storage->sparse_entities[entity_idx] = storage->dense_count; \
+} \
+\
+void remove_##PREFIX(COMP##Storage *storage, Entity entity) { \
+    if (!has_##PREFIX(storage, entity)) return; \
+    uint32_t entity_index = get_entity_index(entity); \
+    uint32_t last_index = storage->dense_count; \
+    uint32_t dense_index = storage->sparse_entities[entity_index]; \
+    storage->sparse_entities[entity_index] = 0; \
+    if (dense_index != last_index) { \
+        storage->dense_data[dense_index] = storage->dense_data[last_index]; \
+        storage->dense_entities[dense_index] = storage->dense_entities[last_index]; \
+        storage->sparse_entities[get_entity_index(storage->dense_entities[dense_index])] = dense_index; \
+    } \
+    storage->dense_entities[last_index] = 0; \
+    storage->dense_data[last_index] = (COMP) { 0 }; \
+    storage->dense_count--; \
+} \
+\
+COMP *get_##PREFIX(COMP##Storage *storage, Entity entity) { \
+    if (!has_##PREFIX(storage, entity)) return NULL; \
+    uint32_t dense_idx = storage->sparse_entities[get_entity_index(entity)]; \
+    return &storage->dense_data[dense_idx]; \
 }
 
-void BrickStorage_destroy(BrickStorage *storage) {
-    (void)storage;
-}
+GENERATE_STORAGE_INIT(VelocityStorage)
+GENERATE_STORAGE_CRUD(Velocity, velocity)
+GENERATE_STORAGE_INIT(BrickStorage)
+GENERATE_STORAGE_CRUD(Brick, brick)
 
-BrickStorage BrickStorage_init(void) {
-    BrickStorage storage;
-    for (int i = 0; i < ENTITY_MAX_COUNT; i++) {
-        storage.sparse_entities[i] = 0;
-        storage.dense_data[i] = (Brick) { 0 };
-        storage.dense_entities[i] = (Entity) { 0 };
-    }
-    return storage;
-}
-
-PaddleStorage PaddleStorage_init(void) {
-    PaddleStorage storage;
-    storage.data = (Paddle) { 0 };
-    return storage;
-}
-
-void PaddleStorage_destroy(PaddleStorage *storage) {
-    storage->entity = (Entity) { 0 };
-    storage->data = (Paddle) { 0 };
-}
-
-BallStorage BallStorage_init(void) {
-    BallStorage storage;
-    storage.data = (Ball) { 0 };
-    return storage;
-}
-
-void BallStorage_destroy(BallStorage *storage) {
-    storage->entity = (Entity) { 0 };
-    storage->data = (Ball) { 0 };
-}
+// singletons require a different impl
+GENERATE_STORAGE_INIT(PaddleStorage)
+GENERATE_STORAGE_INIT(BallStorage)
