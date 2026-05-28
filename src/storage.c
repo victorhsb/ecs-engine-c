@@ -71,7 +71,7 @@ void remove_position(PositionStorage *storage, Entity entity) {
     // clean up sparse_entities
     storage->sparse_entities[entity_index] = 0;
 
-    if (dense_index != last_index;) {
+    if (dense_index != last_index) {
         // move the last item on the dense array to the removed component
         // and point it's sparse entity map to the new index.
         storage->dense_data[dense_index] = storage->dense_data[last_index];
