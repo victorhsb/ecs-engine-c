@@ -1,5 +1,8 @@
+#include <assert.h>
 #include <stdio.h>
 #include <raylib.h>
+#include "world.h"
+#include "system.h"
 
 int main(void) {
     const int screenWidth = 800;
@@ -7,13 +10,14 @@ int main(void) {
 
     InitWindow(screenWidth, screenHeight, "ecs-engine");
 
+    assert(init_systems());
+    system_add(rendering_system);
+
+    World world = init_world();
+
     while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-
-        DrawText("my first window in C", 190, 200, 20, LIGHTGRAY);
-
-        EndDrawing();
+        world.game_state.delta_time = GetFrameTime();
+        run_systems(&world);
     }
 
     CloseWindow();

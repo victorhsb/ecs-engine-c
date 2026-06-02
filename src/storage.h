@@ -25,6 +25,7 @@ typedef struct PositionStorage {
 
 PositionStorage PositionStorage_init(void);
 void PositionStorage_destroy(PositionStorage *storage);
+// position storage api
 bool has_position(PositionStorage const *storage, Entity const entity);
 void upsert_position(PositionStorage *storage, Entity entity, Position position);
 void remove_position(PositionStorage *storage, Entity entity);

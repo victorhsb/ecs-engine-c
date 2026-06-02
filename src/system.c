@@ -1,12 +1,13 @@
 #include "system.h"
 #include <stdlib.h>
+#include <raylib.h>
 
 static SystemManager *manager = NULL;
 
 static const SystemID NULL_SYS = -1;
 
 bool init_systems(void) {
-    if (manager != NULL) return true;  // idempotent
+    if (manager != NULL) return true;
     manager = calloc(1, sizeof(SystemManager));
     return manager != NULL;
 }
@@ -24,7 +25,7 @@ int16_t run_systems(World *world) {
     return (int16_t)manager->count;
 }
 
-SystemID system_add(SystemFn *fn) {
+SystemID system_add(SystemFn fn) {
     if (!manager || !fn || manager->count >= MAX_SYSTEMS) return NULL_SYS;
     SystemID id = (SystemID)manager->count + 1;
     manager->systems[manager->count] = (System){ .fn = fn, .id = id };
@@ -42,4 +43,19 @@ void system_remove(SystemID id) {
             return;
         }
     }
+}
+
+int input_system(World *world) {
+    // pull all the events from raylib and pass down to the game state
+    return 0;
+}
+
+int rendering_system(World *world) {
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
+
+    DrawText("my first window in C", 190, 200, 20, LIGHTGRAY);
+
+    EndDrawing();
+    return 1;
 }

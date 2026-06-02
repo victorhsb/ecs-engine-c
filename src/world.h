@@ -3,8 +3,10 @@
 #include "storage.h"
 #include "entity.h"
 #include <stdint.h>
+#include "input.h"
 
 typedef struct GameState {
+    float delta_time;
     uint32_t score;
     bool paused;
     bool game_over;
@@ -21,6 +23,7 @@ typedef struct World {
     BallStorage ball_storage;
     BrickStorage brick_storage;
 
+    InputState input_state;
     GameState game_state;
 } World;
 

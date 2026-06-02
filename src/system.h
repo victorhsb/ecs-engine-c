@@ -22,3 +22,6 @@ bool init_systems(void);
 SystemID system_add(SystemFn fn);
 void system_remove(SystemID id);
 int16_t run_systems(World *world);
+
+// misc / core systems
+int rendering_system(World *world);
