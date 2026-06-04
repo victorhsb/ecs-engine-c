@@ -9,9 +9,18 @@
 
 Entity init_paddle(World *world) {
     Entity entity = create_entity(&world->entity_manager);
-    upsert_position(&world->position_storage, entity, (Position){0});
-    upsert_paddle(&world->paddle_storage, entity, (Paddle){0});
-    upsert_ball(&world->ball_storage, entity, (Ball){0});
+    Position pos = {.x = 30, .y = 400};
+    upsert_position(&world->position_storage, entity, pos);
+    Paddle pad = {.size = 20, .color = BLACK, .speed = 120};
+    upsert_paddle(&world->paddle_storage, entity, pad);
+    return entity;
+}
+
+Entity init_ball(World *world) {
+    Entity entity = create_entity(&world->entity_manager);
+    Position pos = {.x = 50, .y = 400};
+    upsert_position(&world->position_storage, entity, pos);
+    upsert_ball(&world->ball_storage, entity, (Ball){.color=BLACK, .radius=.5, .dmg=1});
     return entity;
 }
 
@@ -22,9 +31,11 @@ int main(void) {
     InitWindow(screenWidth, screenHeight, "ecs-engine");
 
     assert(init_systems());
+    system_add(move_system);
 
     World world = init_world();
     world.player = init_paddle(&world);
+    init_ball(&world);
 
     while (!WindowShouldClose()) {
         { // CORE SYSTEMS

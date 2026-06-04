@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 typedef struct Position {
-    int x, y;
+    float x, y;
 } Position;
 
 typedef struct Size {
@@ -25,6 +25,7 @@ typedef struct Velocity {
 typedef struct Paddle {
     uint32_t size;
     Color color;
+    int speed;
 } Paddle;
 
 typedef struct Ball {

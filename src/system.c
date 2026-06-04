@@ -1,4 +1,7 @@
 #include "system.h"
+#include "storage.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 static SystemManager *manager = NULL;
 
@@ -41,4 +44,16 @@ void system_remove(SystemID id) {
             return;
         }
     }
+}
+
+int move_system(World *world) {
+    if (world->input_state.horizontal_axis != 0) {
+        Paddle *paddle = get_paddle(&world->paddle_storage, world->player);
+        Position *pos = get_position(&world->position_storage, world->player);
+        if (pos) {
+            pos->x += world->input_state.horizontal_axis * world->game_state.delta_time * (float)paddle->speed;
+        }
+        return 1;
+    }
+    return 0;
 }

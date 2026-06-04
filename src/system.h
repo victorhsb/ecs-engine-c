@@ -2,7 +2,6 @@
 
 #include "world.h"
 #include <stdint.h>
-#include <stdlib.h>
 #include <raylib.h>
 
 #define MAX_SYSTEMS 128
@@ -24,3 +23,5 @@ bool init_systems(void);
 SystemID system_add(SystemFn fn);
 void system_remove(SystemID id);
 int16_t run_systems(World *world);
+
+int move_system(World *world);

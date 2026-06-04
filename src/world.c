@@ -29,8 +29,6 @@ World init_world(void) {
 void destroy_world(World *world) {
     PositionStorage_destroy(&world->position_storage);
     VelocityStorage_destroy(&world->velocity_storage);
-    PaddleStorage_destroy(&world->paddle_storage);
-    BallStorage_destroy(&world->ball_storage);
     BrickStorage_destroy(&world->brick_storage);
 
     destroy_entity_manager(&world->entity_manager);
