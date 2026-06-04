@@ -1,10 +1,19 @@
 #include <assert.h>
-#include <stdio.h>
 #include <raylib.h>
+#include "entity.h"
 #include "render.h"
+#include "storage.h"
 #include "world.h"
 #include "system.h"
 #include "input.h"
+
+Entity init_paddle(World *world) {
+    Entity entity = create_entity(&world->entity_manager);
+    upsert_position(&world->position_storage, entity, (Position){0});
+    upsert_paddle(&world->paddle_storage, entity, (Paddle){0});
+    upsert_ball(&world->ball_storage, entity, (Ball){0});
+    return entity;
+}
 
 int main(void) {
     const int screenWidth = 800;
@@ -13,9 +22,9 @@ int main(void) {
     InitWindow(screenWidth, screenHeight, "ecs-engine");
 
     assert(init_systems());
-    // system_add(rendering_system);
 
     World world = init_world();
+    world.player = init_paddle(&world);
 
     while (!WindowShouldClose()) {
         { // CORE SYSTEMS

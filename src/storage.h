@@ -72,8 +72,12 @@ GENERATE_COMPONENT_CRUD_API(Brick, brick)
 
 // singletons
 GENERATE_COMPONENT_SINGLE_STORAGE(Paddle, PaddleStorage)
-GENERATE_COMPONENT_API(PaddleStorage)
+PaddleStorage PaddleStorage_init(void);
+void upsert_paddle(PaddleStorage *storage, Entity entity, Paddle paddle);
+Paddle* get_paddle(PaddleStorage *storage, Entity entity);
 // ball starts as a singleton but i might just make it into a
 // storage in the future if i implement multi-ball support.
 GENERATE_COMPONENT_SINGLE_STORAGE(Ball, BallStorage)
-GENERATE_COMPONENT_API(BallStorage)
+BallStorage BallStorage_init(void);
+void upsert_ball(BallStorage *storage, Entity entity, Ball ball);
+Ball* get_ball(BallStorage *storage, Entity entity);

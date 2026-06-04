@@ -166,5 +166,33 @@ GENERATE_STORAGE_INIT(BrickStorage)
 GENERATE_STORAGE_CRUD(Brick, brick)
 
 // singletons require a different impl
-GENERATE_STORAGE_INIT(PaddleStorage)
-GENERATE_STORAGE_INIT(BallStorage)
+
+PaddleStorage PaddleStorage_init(void) {
+  PaddleStorage storage = {0};
+  return storage;
+}
+
+BallStorage BallStorage_init(void) {
+  BallStorage storage = {0};
+  return storage;
+}
+
+void upsert_paddle(PaddleStorage *storage, Entity entity, Paddle paddle) {
+    storage->entity = entity;
+    storage->data = paddle;
+}
+
+Paddle *get_paddle(PaddleStorage *storage, Entity entity) {
+    if (storage->entity == entity) return &storage->data;
+    return NULL;
+}
+
+void upsert_ball(BallStorage *storage, Entity entity, Ball ball) {
+    storage->entity = entity;
+    storage->data = ball;
+}
+
+Ball *get_ball(BallStorage *storage, Entity entity) {
+    if (storage->entity == entity) return &storage->data;
+    return NULL;
+}
