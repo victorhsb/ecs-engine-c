@@ -27,5 +27,7 @@ typedef struct World {
     GameState game_state;
 } World;
 
+GameState GameState_init(void);
+
 World init_world(void);
 void destroy_world(World *world);

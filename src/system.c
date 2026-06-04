@@ -1,6 +1,4 @@
 #include "system.h"
-#include <stdlib.h>
-#include <raylib.h>
 
 static SystemManager *manager = NULL;
 
@@ -43,19 +41,4 @@ void system_remove(SystemID id) {
             return;
         }
     }
-}
-
-int input_system(World *world) {
-    // pull all the events from raylib and pass down to the game state
-    return 0;
-}
-
-int rendering_system(World *world) {
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-
-    DrawText("my first window in C", 190, 200, 20, LIGHTGRAY);
-
-    EndDrawing();
-    return 1;
 }

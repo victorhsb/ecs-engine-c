@@ -5,15 +5,23 @@
 #include <stdlib.h>
 
 
+GameState GameState_init(void) {
+    return (GameState){0};
+}
+
 World init_world(void) {
     World world = {0};
+    // ecs
     world.position_storage = PositionStorage_init();
     world.velocity_storage = VelocityStorage_init();
     world.paddle_storage = PaddleStorage_init();
     world.ball_storage = BallStorage_init();
     world.brick_storage = BrickStorage_init();
 
+    // core engine
     world.entity_manager = init_entity_manager();
+    world.input_state = InputState_init();
+    world.game_state = GameState_init();
 
     return world;
 }
