@@ -4,8 +4,6 @@
 #include "entity.h"
 #include <stdint.h>
 
-#define ENTITY_MAX_COUNT 1024
-
 // reference implementation to the macro wizardry below
 typedef struct PositionStorage {
     // sparse entities is the sparse array of indexes that maps
@@ -58,7 +56,7 @@ Position *get_position(PositionStorage *storage, Entity const entity);
 
 #define GENERATE_COMPONENT_CRUD_API(TARGET, NAME) \
     TARGET *get_##NAME(TARGET##Storage *storage, Entity entity); \
-    void set_##NAME(TARGET##Storage *storage, Entity entity, TARGET const *data); \
+    void upsert_##NAME(TARGET##Storage *storage, Entity entity, TARGET const data); \
     void remove_##NAME(TARGET##Storage *storage, Entity entity); \
     bool has_##NAME(TARGET##Storage *storage, Entity entity);
 

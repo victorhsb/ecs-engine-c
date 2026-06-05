@@ -14,8 +14,7 @@
 //
 
 PositionStorage PositionStorage_init(void) {
-    PositionStorage storage = {0};
-    return storage;
+    return (PositionStorage){0};
 }
 
 void PositionStorage_destroy(PositionStorage *storage) {
@@ -104,8 +103,7 @@ void tgt##_destroy(tgt *storage) { \
     (void)storage; \
 } \
 tgt tgt##_init(void) { \
-    tgt storage = {0}; \
-    return storage; \
+    return (tgt){0}; \
 }
 
 #define GENERATE_STORAGE_CRUD(COMP, PREFIX) \

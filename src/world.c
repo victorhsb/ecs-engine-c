@@ -1,8 +1,8 @@
 #include "world.h"
 #include "entity.h"
 #include "storage.h"
+#include <assert.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 
 GameState GameState_init(void) {
@@ -10,7 +10,8 @@ GameState GameState_init(void) {
 }
 
 World init_world(void) {
-    World world = {0};
+    World world = (World){0};
+
     // ecs
     world.position_storage = PositionStorage_init();
     world.velocity_storage = VelocityStorage_init();
@@ -32,5 +33,4 @@ void destroy_world(World *world) {
     BrickStorage_destroy(&world->brick_storage);
 
     destroy_entity_manager(&world->entity_manager);
-    free(world);
 }

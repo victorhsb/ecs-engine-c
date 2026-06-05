@@ -1,5 +1,7 @@
 #include "system.h"
+#include "entity.h"
 #include "storage.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -56,4 +58,15 @@ int move_system(World *world) {
         return 1;
     }
     return 0;
+}
+
+int debug_system(World *world) {
+    if (world->input_state.action) {
+        // kill the last brick; just for fun
+        Entity b = world->brick_storage.dense_entities[world->brick_storage.dense_count];
+        remove_brick(&world->brick_storage, b);
+        remove_position(&world->position_storage, b);
+        destroy_entity(&world->entity_manager, b);
+    }
+    return 1;
 }

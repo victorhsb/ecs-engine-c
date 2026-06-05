@@ -16,6 +16,7 @@ typedef struct Brick {
     Size size;
     uint8_t hp;
 } Brick;
+Color get_brick_color(const Brick brick);
 
 typedef struct Velocity {
     float x;
@@ -23,7 +24,7 @@ typedef struct Velocity {
 } Velocity;
 
 typedef struct Paddle {
-    uint32_t size;
+    Size size;
     Color color;
     int speed;
 } Paddle;
