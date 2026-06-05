@@ -1,11 +1,13 @@
 #include "render.h"
 #include "component.h"
+#include "raylib.h"
 #include "storage.h"
+#include <stdio.h>
 
 int render(World *world) {
   ClearBackground(RAYWHITE);
 
-  Paddle *paddle = get_paddle(&world->paddle_storage, world->player);
+Paddle *paddle = get_paddle(&world->paddle_storage, world->player);
   if (paddle) {
     Position *pos = get_position(&world->position_storage, world->player);
     if (pos) {
@@ -34,6 +36,10 @@ int render(World *world) {
     }
   }
 
-  DrawText("my first window in C", 190, 200, 20, LIGHTGRAY);
+  if (world->game_state.paused) {
+      printf("drawing text\n");
+      DrawText("Paused, press space to continue", 100, 200, 20, BLACK);
+  }
+
   return 1;
 }

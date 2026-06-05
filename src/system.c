@@ -70,3 +70,17 @@ int debug_system(World *world) {
     }
     return 1;
 }
+
+int input_system(World *world) {
+    if (world->input_state.action) {
+        if (world->game_state.paused) {
+            world->game_state.paused = false;
+        }
+    }
+    if (world->input_state.quit) {
+        if (world->game_state.paused)
+            return -1;
+        world->game_state.paused = true;
+    }
+    return 1;
+}

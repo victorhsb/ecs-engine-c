@@ -26,3 +26,4 @@ int16_t run_systems(World *world);
 
 int move_system(World *world);
 int debug_system(World *world);
+int input_system(World *world);

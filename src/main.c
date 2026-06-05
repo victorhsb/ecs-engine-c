@@ -26,7 +26,7 @@ Entity init_paddle(World *world) {
 
 Entity init_ball(World *world) {
   Entity entity = create_entity(&world->entity_manager);
-  Position pos = {.x = 50, .y = SCREEN_HEIGHT - (PADDLE_HEIGHT * 2) - 20};
+  Position pos = {.x = (float)SCREEN_WIDTH/2, .y = (float)SCREEN_HEIGHT/2};
   upsert_position(&world->position_storage, entity, pos);
   upsert_ball(&world->ball_storage, entity,
               (Ball){.color = BLACK, .radius = 5, .dmg = 1});
@@ -62,6 +62,7 @@ void init_bricks(World *world) {
 
 int main(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "ecs-engine");
+  SetExitKey(KEY_BACKSPACE);
 
   World world = init_world();
   world.player = init_paddle(&world);
@@ -71,6 +72,7 @@ int main(void) {
   assert(init_systems());
   system_add(move_system);
   system_add(debug_system);
+  system_add(input_system);
 
   while (!WindowShouldClose()) {
     { // CORE SYSTEMS
