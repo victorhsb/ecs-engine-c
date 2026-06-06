@@ -1,5 +1,5 @@
-#include <raylib.h>
 #include "component.h"
+#include <raylib.h>
 
 Color get_brick_color(const Brick brick) {
     if (brick.hp < 10) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdbool.h>
 #include <stddef.h>
 
 typedef enum EventType {
@@ -20,6 +21,17 @@ typedef struct EventBus {
 } EventBus;
 
 // event types
-typedef struct ExitEvent {
-    
-} ExitEvent;
+typedef bool EventExit;
+typedef int EventScore;
+
+void destroy_event_bus(EventBus*);
+EventBus init_event_bus(void);
+
+#define GENERATE_BUS_API(type, name) \
+    bool EventBus_add_##name(EventBus *, void*); \
+    void *EventBus_get_##name(EventBus *, size_t); \
+    void *EventBus_pull_##name(EventBus *eb); \
+    size_t EventBus_has_event_##name(EventBus*);
+
+GENERATE_BUS_API(EventExit, exit)
+GENERATE_BUS_API(EventScore, score)

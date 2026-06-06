@@ -1,5 +1,6 @@
 #pragma once
 
+#include "events.h"
 #include "storage.h"
 #include "entity.h"
 #include <stdint.h>
@@ -25,6 +26,7 @@ typedef struct World {
 
     InputState input_state;
     GameState game_state;
+    EventBus event_bus;
 } World;
 
 GameState GameState_init(void);

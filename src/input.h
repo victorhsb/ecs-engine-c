@@ -5,7 +5,7 @@
 
 typedef enum NotificationEvent {
     EVENT_ACTION,
-    EVENT_EXIT,
+    EVENT_ESC,
     NOTIFICATION_EVENT_COUNT,
 } NotificationEvent;
 

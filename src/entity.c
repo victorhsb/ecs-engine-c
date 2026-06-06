@@ -17,26 +17,23 @@ Entity entity_init(uint32_t index, uint32_t generation) {
     return (Entity)((uint64_t)generation << 32 | index);
 }
 
-EntityManager init_entity_manager(void) {
-    return (EntityManager){0};
-}
+EntityManager init_entity_manager(void) { return (EntityManager){0}; }
 
-void destroy_entity_manager(EntityManager *mgr) {
-    (void)mgr;
-}
+void destroy_entity_manager(EntityManager *mgr) { (void)mgr; }
 
 bool entity_alive(EntityManager *mgr, Entity id) {
-    uint32_t idx = get_entity_index(id),
-             generation = get_entity_generation(id);
+    uint32_t idx = get_entity_index(id), generation = get_entity_generation(id);
     return mgr->sparse_alive[idx] && mgr->sparse_generations[idx] == generation;
 }
 
 // create entity is responsible for returning the next available entity for use
-// if there were any entities freed then it should reclaim it and bump it's generation.
-// if there are no freed entities then it should pick the next gen with zeroed generation 0.
+// if there were any entities freed then it should reclaim it and bump it's
+// generation. if there are no freed entities then it should pick the next gen
+// with zeroed generation 0.
 Entity create_entity(EntityManager *mgr) {
     if (mgr->dense_free_entities_count > 0) {
-        uint32_t index = mgr->dense_free_entities[--mgr->dense_free_entities_count];
+        uint32_t index =
+            mgr->dense_free_entities[--mgr->dense_free_entities_count];
         mgr->sparse_alive[index] = true;
         return entity_init(index, ++mgr->sparse_generations[index]);
     }
@@ -49,7 +46,8 @@ Entity create_entity(EntityManager *mgr) {
 
 void destroy_entity(EntityManager *mgr, Entity entity) {
     uint32_t idx = get_entity_index(entity);
-    if (!mgr->sparse_alive[idx]) return;
+    if (!mgr->sparse_alive[idx])
+        return;
 
     mgr->sparse_alive[idx] = false;
     mgr->dense_free_entities[mgr->dense_free_entities_count++] = idx;

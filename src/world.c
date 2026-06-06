@@ -4,9 +4,8 @@
 #include <assert.h>
 #include <stdint.h>
 
-
 GameState GameState_init(void) {
-    return (GameState){.game_over=false, .paused=true, .score=0};
+    return (GameState){.game_over = false, .paused = true, .score = 0};
 }
 
 World init_world(void) {
