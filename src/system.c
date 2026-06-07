@@ -1,9 +1,10 @@
-#include "system.h"
 #include "entity.h"
 #include "events.h"
 #include "input.h"
+#include "raylib.h"
 #include "storage.h"
 #include <assert.h>
+#include "system.h"
 
 static int movement_system(World *world) {
     Velocity *vel = get_velocity(&world->velocity_storage, world->player);
@@ -14,6 +15,17 @@ static int movement_system(World *world) {
     return 1;
 }
 
+static int ball_movement_system(World *world) {
+    (void)world;
+    return 1;
+}
+
+// applies the velocity and computes collision
+// the ball collides with everything:
+// - with the wall (left, right and top) it just bounces.
+// - with the bottom wall it ends the game.
+// - with the paddle it bounces (with effects (?)).
+// - with bricks it should emit the hit event.
 static int physics_system(World *world) {
     VelocityStorage *vs = &world->velocity_storage;
     for (size_t i = 0; i < vs->dense_count; i++) {
@@ -27,6 +39,13 @@ static int physics_system(World *world) {
         pos->y += vel.y * world->game_state.delta_time;
     }
     return 1;
+}
+
+//
+static void handle_collisions(World *world) {
+    Rectangle
+
+    GetCollisionRec(Rectangle rec1, Rectangle rec2)
 }
 
 static int events_system(World *world) {
@@ -47,6 +66,7 @@ static int events_system(World *world) {
 }
 
 static SystemFn systems[] = {
+    ball_movement_system,
     movement_system,
     physics_system,
     events_system,
