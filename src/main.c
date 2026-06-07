@@ -73,10 +73,11 @@ int main(void) {
     init_ball(&world);
     init_bricks(&world);
 
-    assert(init_systems());
-    system_add(move_system);
-    system_add(debug_system);
-    system_add(input_system);
+  assert(init_systems());
+  system_add(movement_system);
+  system_add(physics_system);
+  system_add(debug_system);
+  system_add(input_system);
 
     bool shouldExit = false;
     while (!shouldExit || !WindowShouldClose()) {

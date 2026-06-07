@@ -54,17 +54,25 @@ void system_remove(SystemID id) {
     }
 }
 
-int move_system(World *world) {
-    if (world->input_state.horizontal_axis != 0) {
-        Paddle *paddle = get_paddle(&world->paddle_storage, world->player);
-        Position *pos = get_position(&world->position_storage, world->player);
-        if (pos) {
-            pos->x += world->input_state.horizontal_axis *
-                      world->game_state.delta_time * (float)paddle->speed;
-        }
-        return 1;
+int movement_system(World *world) {
+    Velocity *vel = get_velocity(&world->velocity_storage, world->player);
+    assert(vel != NULL);
+    vel->x = world->input_state.horizontal_axis;
+    return 1;
+}
+
+int physics_system(World *world) {
+    VelocityStorage *vs = &world->velocity_storage;
+    for (size_t i = 0; i < vs->dense_count; i++) {
+        Velocity vel = vs->dense_data[i];
+        if (vel.x == 0 && vel.y == 0) continue;
+        Entity en = vs->dense_entities[i];
+        Position *pos = get_position(&world->position_storage, en);
+        assert(pos != NULL);
+        pos->x += vel.x * world->game_state.delta_time;
+        pos->y += vel.y * world->game_state.delta_time;
     }
-    return 0;
+    return 1;
 }
 
 int debug_system(World *world) {

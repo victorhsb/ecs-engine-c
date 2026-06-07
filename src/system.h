@@ -24,6 +24,7 @@ SystemID system_add(SystemFn fn);
 void system_remove(SystemID id);
 int16_t run_systems(World *world);
 
-int move_system(World *world);
+int movement_system(World *world);
 int debug_system(World *world);
 int input_system(World *world);
+int physics_system(World *world);

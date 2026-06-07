@@ -3,11 +3,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum NotificationEvent {
+typedef enum BooleanInputEventTypes {
     EVENT_ACTION,
     EVENT_ESC,
     NOTIFICATION_EVENT_COUNT,
-} NotificationEvent;
+} BooleanNotificationEvent;
 
 // right now we only have sideways movement on the player
 // this means that only the X axis is caught. which simplifies the
