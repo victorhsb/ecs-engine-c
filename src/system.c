@@ -4,6 +4,7 @@
 #include "input.h"
 #include "storage.h"
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 static SystemManager *manager = NULL;
@@ -57,7 +58,9 @@ void system_remove(SystemID id) {
 int movement_system(World *world) {
     Velocity *vel = get_velocity(&world->velocity_storage, world->player);
     assert(vel != NULL);
-    vel->x = world->input_state.horizontal_axis;
+    Paddle *pad = get_paddle(&world->paddle_storage, world->player);
+    assert(pad != NULL);
+    vel->x = world->input_state.horizontal_axis * pad->speed;
     return 1;
 }
 

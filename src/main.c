@@ -20,8 +20,9 @@ Entity init_paddle(World *world) {
     Paddle pad = {.size =
                       (Size){.width = PADDLE_WIDTH, .height = PADDLE_HEIGHT},
                   .color = BLACK,
-                  .speed = 10};
+                  .speed = 100};
     upsert_paddle(&world->paddle_storage, entity, pad);
+    upsert_velocity(&world->velocity_storage, entity, (Velocity){0});
     return entity;
 }
 
@@ -32,6 +33,7 @@ Entity init_ball(World *world) {
     upsert_position(&world->position_storage, entity, pos);
     upsert_ball(&world->ball_storage, entity,
                 (Ball){.color = BLACK, .radius = 5, .dmg = 1});
+    upsert_velocity(&world->velocity_storage, entity, (Velocity){0});
     return entity;
 }
 
