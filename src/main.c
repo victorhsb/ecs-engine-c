@@ -44,6 +44,8 @@ Entity init_ball(World *world) {
 #define BRICK_OFFSET 5
 #define BRICK_MARGIN 15
 #define BRICK_COUNT (SCREEN_WIDTH - (2 * BRICK_MARGIN)) / BRICK_WIDTH
+#define BRICK_SIZE                                                             \
+    (Size) { .width = BRICK_WIDTH, .height = BRICK_HEIGHT }
 
 void init_brick(World *world, float x, float y, int hp) {
     Entity entity = create_entity(&world->entity_manager);
@@ -51,19 +53,18 @@ void init_brick(World *world, float x, float y, int hp) {
     upsert_position(&world->position_storage, entity, pos);
     upsert_brick(
         &world->brick_storage, entity,
-        (Brick){.size = (Size){.width = BRICK_WIDTH, .height = BRICK_HEIGHT},
-                .color = BLACK,
-                .hp = (uint8_t)hp});
+        (Brick){.size = BRICK_SIZE, .color = BLACK, .hp = (uint8_t)hp});
+}
+
+static inline float offset(int idx) {
+    return (float)(BRICK_MARGIN + (idx * BRICK_OFFSET));
 }
 
 void init_bricks(World *world) {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < BRICK_COUNT; j++) {
-            init_brick(
-                world,
-                (float)((j * BRICK_WIDTH) + BRICK_MARGIN + (j * BRICK_OFFSET)),
-                (float)((i * BRICK_HEIGHT) + (i * BRICK_OFFSET) + BRICK_MARGIN),
-                2 - i * 5);
+            init_brick(world, (float)(j * BRICK_WIDTH) + offset(j),
+                       (float)(i * BRICK_HEIGHT) + offset(i), 2 - i * 5);
         }
 }
 
