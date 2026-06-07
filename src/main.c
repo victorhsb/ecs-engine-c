@@ -13,6 +13,9 @@
 #define PADDLE_HEIGHT 5
 #define PADDLE_WIDTH 50
 
+#define BALL_INITIAL_POS                                                       \
+    {.x = (float)SCREEN_WIDTH / 2, .y = (float)SCREEN_HEIGHT / 2}
+
 Entity init_paddle(World *world) {
     Entity entity = create_entity(&world->entity_manager);
     Position pos = {.x = 30, .y = SCREEN_HEIGHT - 20};
@@ -28,8 +31,7 @@ Entity init_paddle(World *world) {
 
 Entity init_ball(World *world) {
     Entity entity = create_entity(&world->entity_manager);
-    Position pos = {.x = (float)SCREEN_WIDTH / 2,
-                    .y = (float)SCREEN_HEIGHT / 2};
+    Position pos = BALL_INITIAL_POS;
     upsert_position(&world->position_storage, entity, pos);
     upsert_ball(&world->ball_storage, entity,
                 (Ball){.color = BLACK, .radius = 5, .dmg = 1});
@@ -74,12 +76,6 @@ int main(void) {
     world.event_bus = init_event_bus();
     init_ball(&world);
     init_bricks(&world);
-
-  assert(init_systems());
-  system_add(movement_system);
-  system_add(physics_system);
-  system_add(debug_system);
-  system_add(input_system);
 
     bool shouldExit = false;
     while (!shouldExit || !WindowShouldClose()) {
