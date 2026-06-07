@@ -29,16 +29,19 @@ static int physics_system(World *world) {
     return 1;
 }
 
-static int input_system(World *world) {
-    if (world->input_state.events[EVENT_ACTION]) {
-        if (world->game_state.paused) {
-            world->game_state.paused = false;
-        }
-    }
+static int events_system(World *world) {
+    bool *paused = &world->game_state.paused;
+    // pressing esc once = pauses
+    // pressing esc twice = exits
     if (world->input_state.events[EVENT_ESC]) {
-        if (world->game_state.paused)
+        if (*paused)
             EventBus_add_exit(&world->event_bus, (void *)true);
-        world->game_state.paused = true;
+        *paused = true;
+    }
+    if (world->input_state.events[EVENT_ACTION]) {
+        if (*paused) {
+            *paused = false;
+        }
     }
     return 1;
 }
@@ -46,7 +49,7 @@ static int input_system(World *world) {
 static SystemFn systems[] = {
     movement_system,
     physics_system,
-    input_system,
+    events_system,
 };
 
 void run_systems(World *world) {
