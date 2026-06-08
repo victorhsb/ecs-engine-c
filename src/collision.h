@@ -11,6 +11,14 @@ typedef struct CollisionObject {
     Entity ent;
 } CollisionObject;
 
+/*
+ * Collision system plan:
+ * A first pass does straight calculations to check if the paddle or ball are crossing the walls
+ * then a second pass does a broad calculation to validate ball<>brick collision which
+ * happens at a grid level (we can filter which bricks are nearby roughly to reduce calculations maybe(?))
+ */
+
+/* The full scope of the collision system. should we cache it? should we recalculate it every time? */
 typedef struct CollisionWorld {
     CollisionObject paddle;
     CollisionObject ball;

@@ -27,8 +27,8 @@ Rectangle *get_all_brick_collision_rects(World *world, Rectangle *rects,
 Rectangle get_brick_collision_rect(World *world, const Entity entity) {
     Brick *brick = get_brick(&world->brick_storage, entity);
     Position *pos = get_position(&world->position_storage, entity);
-    return (Rectangle){.height = brick->size.height,
-                       .width = brick->size.width,
+    return (Rectangle){.height = (float)brick->size.height,
+                       .width = (float)brick->size.width,
                        .x = pos->x,
                        .y = pos->y};
 }
@@ -36,8 +36,8 @@ Rectangle get_brick_collision_rect(World *world, const Entity entity) {
 Rectangle get_paddle_collision_rect(World *world) {
     Paddle *paddle = get_paddle(&world->paddle_storage, world->player);
     Position *pos = get_position(&world->position_storage, world->player);
-    return (Rectangle){.height = paddle->size.height,
-                       .width = paddle->size.width,
+    return (Rectangle){.height = (float)paddle->size.height,
+                       .width = (float)paddle->size.width,
                        .x = pos->x,
                        .y = pos->y};
 }
